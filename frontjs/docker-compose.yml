@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: .
+    container_name: frontjs_container
+    ports:
+      - "8001:8001"

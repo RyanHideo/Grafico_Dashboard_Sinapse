@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indicadores Atuais</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .chart-container {
+      width: 400px;
+      height: 400px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Indicadores Atuais</h1>
+  <div class="chart-container">
+    <canvas id="kwGauge"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="fatorGauge"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="sensorGauge"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="annualChart"></canvas>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
