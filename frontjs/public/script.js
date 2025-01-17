@@ -1,120 +1,122 @@
-// URL do backend
-const backendUrl = '/api/data';
+// Inicializar os gráficos usando Chart.js
+let consumoMensalChart, consumoChart, potenciaChart;
 
-// Referências aos elementos Canvas
-const kwGaugeCtx = document.getElementById('kwGauge').getContext('2d');
-const fatorGaugeCtx = document.getElementById('fatorGauge').getContext('2d');
-const sensorGaugeCtx = document.getElementById('sensorGauge').getContext('2d');
-const monthlyChartCtx = document.getElementById('annualChart').getContext('2d');
+const initializeCharts = () => {
+  const ctxConsumoMensal = document.getElementById('consumoMensalChart').getContext('2d');
+  const ctxConsumo = document.getElementById('consumoChart').getContext('2d');
+  const ctxPotencia = document.getElementById('potenciaChart').getContext('2d');
 
-// Variáveis para os gráficos
-let kwGaugeChart, fatorGaugeChart, sensorGaugeChart, monthlyChart;
+  consumoMensalChart = new Chart(ctxConsumoMensal, {
+    type: 'bar',
+    data: {
+      labels: [], // Será atualizado com os meses
+      datasets: [{
+        label: 'Consumo Mensal (kWh)',
+        data: [], // Será atualizado com os valores
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+      },
+      scales: {
+        y: { beginAtZero: true },
+      },
+    },
+  });
 
-// Função para buscar os dados do backend
-async function fetchData() {
+  consumoChart = new Chart(ctxConsumo, {
+    type: 'pie',
+    data: {
+      labels: ['Utilizado', 'Disponível'],
+      datasets: [{
+        data: [], // Será atualizado
+        backgroundColor: ['#FF6384', '#36A2EB'],
+      }],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+
+  potenciaChart = new Chart(ctxPotencia, {
+    type: 'pie',
+    data: {
+      labels: ['Utilizado', 'Disponível'],
+      datasets: [{
+        data: [], // Será atualizado
+        backgroundColor: ['#FFCE56', '#4BC0C0'],
+      }],
+    },
+    options: {
+      responsive: true,
+    },
+  });
+};
+
+// Função para buscar dados do backend
+const fetchData = async () => {
   try {
-    const response = await fetch(backendUrl);
+    const response = await fetch('http://192.168.15.28:700/api/data'); // URL da API
+    if (!response.ok) throw new Error('Erro ao buscar dados da API');
     const data = await response.json();
-    return data;
+
+    console.log('Dados recebidos do backend:', data); // Log para verificar os dados recebidos
+
+    // Atualizar gráficos e dados
+    updateCharts(data);
+    updateTable(data.atual);
   } catch (error) {
-    console.error('Erro ao obter dados do backend:', error);
-    return null;
+    console.error('Erro:', error);
   }
-}
+};
 
-// Função para criar ou atualizar gráficos do tipo Gauge
-function updateGaugeChart(chart, ctx, value, label, color) {
-  if (!chart) {
-    // Criar o gráfico se não existir
-    return new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        datasets: [
-          {
-            data: [value, 100 - value],
-            backgroundColor: [color, '#E0E0E0'],
-            borderWidth: 0,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        cutout: '80%',
-        plugins: {
-          tooltip: { enabled: false },
-          legend: { display: false },
-          title: { display: true, text: label },
-        },
-      },
-    });
-  } else {
-    // Atualizar os dados do gráfico existente
-    chart.data.datasets[0].data = [value, 100 - value];
-    chart.update();
-    return chart;
+// Função para atualizar gráficos
+const updateCharts = (data) => {
+  console.log('Atualizando gráficos com os dados:', data);
+
+  // Atualizar gráfico de consumo mensal
+  if (consumoMensalChart) {
+    consumoMensalChart.data.labels = data.historico.map(row => row.mes);
+    consumoMensalChart.data.datasets[0].data = data.historico.map(row => row.total_kwh_mes);
+    consumoMensalChart.update();
   }
-}
 
-// Função para criar ou atualizar o gráfico de consumo mensal
-function updateMonthlyChart(chart, ctx, monthlyData) {
-  // Extrair os labels e valores em ordem decrescente
-  const labels = monthlyData.map((entry) => entry.mes).reverse();
-  const values = monthlyData.map((entry) => entry.total_kwh_mes).reverse();
-
-  if (!chart) {
-    // Criar o gráfico se não existir
-    return new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Consumo Mensal (kWh)',
-            data: values,
-            backgroundColor: '#FF6384',
-            borderColor: '#FF6384',
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: { display: true, text: 'Consumo Mensal - Últimos Meses' },
-        },
-        scales: {
-          x: { title: { display: true, text: 'Mês' } },
-          y: { title: { display: true, text: 'Consumo (kWh)' } },
-        },
-      },
-    });
-  } else {
-    // Atualizar os dados do gráfico existente
-    chart.data.labels = labels;
-    chart.data.datasets[0].data = values;
-    chart.update();
-    return chart;
+  // Atualizar gráficos de pizza (consumo atual e potência ativa)
+  if (consumoChart) {
+    consumoChart.data.datasets[0].data = [
+      data.atual.kw_atual,
+      Math.max(0, 100 - data.atual.kw_atual), // Calculo de porcentagem fictício, ajuste conforme necessidade
+    ];
+    consumoChart.update();
   }
-}
 
-// Função para atualizar os gráficos dinamicamente
-async function updateCharts() {
-  const data = await fetchData();
-  if (!data) return;
+  if (potenciaChart) {
+    potenciaChart.data.datasets[0].data = [
+      data.atual.kw_atual,
+      Math.max(0, 100 - data.atual.kw_atual), // Calculo de porcentagem fictício, ajuste conforme necessidade
+    ];
+    potenciaChart.update();
+  }
+};
 
-  const kwAtual = data.atual.kw_atual;
-  const fatorPotencia = parseFloat(data.atual.fator_potencia.replace('%', ''));
-  const sensorStatus = data.atual.sensor_status === 'Ativo' ? 100 : 0;
+// Função para atualizar tabela de dados
+const updateTable = (atual) => {
+  console.log('Atualizando tabela com os dados:', atual);
 
-  kwGaugeChart = updateGaugeChart(kwGaugeChart, kwGaugeCtx, kwAtual, 'KW Atual', '#4CAF50');
-  fatorGaugeChart = updateGaugeChart(fatorGaugeChart, fatorGaugeCtx, fatorPotencia, 'Fator de Potência', '#2196F3');
-  sensorGaugeChart = updateGaugeChart(sensorGaugeChart, sensorGaugeCtx, sensorStatus, 'Status do Sensor', '#FF5722');
+  // Atualizar os valores na tabela
+  document.getElementById('tensaoLL').textContent = atual.tensao_LL || '0.00';
+  document.getElementById('correnteLL').textContent = atual.corrente_LL || '0.00';
+  document.getElementById('tensaoLN').textContent = atual.tensao_LN || '0.00';
+  document.getElementById('correnteLN').textContent = atual.corrente_LN || '0.00';
+  document.getElementById('fp').textContent = atual.fator_potencia || '0.00%';
+  document.getElementById('frequencia').textContent = atual.frequencia || '0.00';
+};
 
-  monthlyChart = updateMonthlyChart(monthlyChart, monthlyChartCtx, data.historico);
-}
-
-// Atualizar os gráficos a cada 5 segundos
-setInterval(updateCharts, 5000);
-
-// Inicializar os gráficos na carga inicial
-updateCharts();
+// Chamar fetchData para buscar e exibir os dados
+initializeCharts();
+fetchData();

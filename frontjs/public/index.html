@@ -3,35 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indicadores Atuais</title>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    .chart-container {
-      width: 400px;
-      height: 400px;
-      margin-bottom: 30px;
-    }
-  </style>
 </head>
 <body>
-  <h1>Indicadores Atuais</h1>
-  <div class="chart-container">
-    <canvas id="kwGauge"></canvas>
+  <div class="dashboard">
+    <!-- Gráficos de Gauge -->
+    <div class="top-section">
+      <canvas id="consumoChart"></canvas>
+      <canvas id="potenciaChart"></canvas>
+    </div>
+    <!-- Parte Inferior -->
+    <div class="bottom-section">
+      <!-- Gráfico de Barras -->
+      <div class="left-section">
+        <canvas id="consumoMensalChart"></canvas>
+      </div>
+      <!-- Tabela de Dados -->
+      <div class="right-section">
+        <table>
+          <thead>
+            <tr>
+              <th>Parâmetro</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Tensão LL</td><td id="tensaoLL">--</td></tr>
+            <tr><td>Corrente LL</td><td id="correnteLL">--</td></tr>
+            <tr><td>Tensão LN</td><td id="tensaoLN">--</td></tr>
+            <tr><td>Corrente LN</td><td id="correnteLN">--</td></tr>
+            <tr><td>FP</td><td id="fp">--</td></tr>
+            <tr><td>Frequência</td><td id="frequencia">--</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <div class="chart-container">
-    <canvas id="fatorGauge"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="sensorGauge"></canvas>
-  </div>
-  <div class="chart-container">
-    <canvas id="annualChart"></canvas>
-  </div>
-
   <script src="script.js"></script>
 </body>
 </html>
