@@ -1,4 +1,4 @@
-// Adicionando suporte para texto no centro dos gráficos e ponteiro
+// Adicionando suporte para texto no centro dos gráficos
 Chart.register({
   id: 'centerText',
   beforeDraw(chart) {
@@ -15,24 +15,6 @@ Chart.register({
       ctx.fillText(text, width / 2, height / 1.5);
       ctx.restore();
     }
-
-    // Adiciona o ponteiro
-    const dataset = chart.data.datasets[0];
-    const total = dataset.data.reduce((sum, value) => sum + value, 0);
-    const currentValue = dataset.data[0];
-    const percentage = currentValue / total;
-    const angle = Math.PI * (1 - percentage); // Calcula o ângulo do ponteiro
-    const x = Math.cos(angle) * (width / 4) + width / 2;
-    const y = Math.sin(angle) * (height / 4) + height / 1.5;
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(width / 2, height / 1.5); // Centro do gráfico
-    ctx.lineTo(x, y); // Ponta do ponteiro
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#FF0000'; // Cor do ponteiro
-    ctx.stroke();
-    ctx.restore();
   },
 });
 
@@ -69,7 +51,7 @@ const initializeCharts = () => {
     },
   });
 
-  // Gráfico de pizza de consumo
+  // Gráfico de consumo em (kWh)
   consumoChart = new Chart(ctxConsumo, {
     type: 'doughnut',
     data: {
@@ -85,6 +67,13 @@ const initializeCharts = () => {
       circumference: 180, // Faz a meia lua
       plugins: {
         legend: { display: false },
+        title: {
+          display: true,
+          text: 'Consumo em (kWh)', // Adiciona o título do gráfico
+          font: {
+            size: 16,
+          },
+        },
       },
       elements: {
         center: {
@@ -96,7 +85,7 @@ const initializeCharts = () => {
     },
   });
 
-  // Gráfico de pizza de potência
+  // Gráfico de potência ativa da planta (kVA)
   potenciaChart = new Chart(ctxPotencia, {
     type: 'doughnut',
     data: {
@@ -112,6 +101,13 @@ const initializeCharts = () => {
       circumference: 180, // Faz a meia lua
       plugins: {
         legend: { display: false },
+        title: {
+          display: true,
+          text: 'Potência ativa da planta (kVA)', // Adiciona o título do gráfico
+          font: {
+            size: 16,
+          },
+        },
       },
       elements: {
         center: {

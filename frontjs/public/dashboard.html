@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #2b2b3c;
+    }
+
+    .navbar .navbar-brand, .navbar .nav-link {
+      color: #ffffff;
+    }
+
+    .card {
+      background-color: #2b2b3c;
+      border: none;
+      border-radius: 10px;
+      color: #ffffff;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard .row {
+      margin-bottom: 20px;
+    }
+
+    #consumoMensalChart, #consumoChart, #potenciaChart {
+      background-color: #2b2b3c;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    table {
+      color: #ffffff;
+    }
+
+    th, td {
+      color: #ffffff !important;
+    }
+
+    .card-header {
+      font-size: 1.25rem;
+      text-align: center;
+      background-color: #3b3b4f;
+      color: #ffffff;
+    }
+
+    .card .table-hover tbody tr:hover {
+      background-color: #44445a;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="logo-versao-2.png" alt="Logo da Empresa" width="30" height="30" class="d-inline-block align-text-top">
+        Sinapse
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Início</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard container mt-4">
+    <!-- Linha superior de cards -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card text-center">
+          <h5>Consumo Total</h5>
+          <p id="consumoTotal">--</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center">
+          <h5>Potência Total</h5>
+          <p id="potenciaTotal">--</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center">
+          <h5>Fator de Potência</h5>
+          <p id="fatorPotencia">--</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha com gráficos -->
+    <div class="row">
+      <div class="col-md-6">
+        <canvas id="consumoChart"></canvas>
+      </div>
+      <div class="col-md-6">
+        <canvas id="potenciaChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Linha inferior -->
+    <div class="row">
+      <div class="col-md-8">
+        <canvas id="consumoMensalChart"></canvas>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">Informações Detalhadas</div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Parâmetro</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Tensão LL</td><td id="tensaoLL">--</td></tr>
+                <tr><td>Corrente LL</td><td id="correnteLL">--</td></tr>
+                <tr><td>Tensão LN</td><td id="tensaoLN">--</td></tr>
+                <tr><td>Corrente LN</td><td id="correnteLN">--</td></tr>
+                <tr><td>FP</td><td id="fp">--</td></tr>
+                <tr><td>Frequência</td><td id="frequencia">--</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
