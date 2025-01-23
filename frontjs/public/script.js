@@ -29,10 +29,10 @@ const initializeCharts = () => {
   consumoMensalChart = new Chart(ctxConsumoMensal, {
     type: 'bar',
     data: {
-      labels: [], // Atualizado com os meses do backend
+      labels: [],
       datasets: [{
         label: 'Consumo Mensal (kWh)',
-        data: [], // Atualizado com os valores do backend
+        data: [], 
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -40,14 +40,32 @@ const initializeCharts = () => {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false, // Permite altura independente do aspecto
+      maintainAspectRatio: false, 
       plugins: {
-        legend: { display: true },
+        legend: { 
+          display: true,
+          labels: {
+            fontColor: "blue",
+            fontSize: 18
+        }
+        },
+        color: '#b79fd8'
       },
       scales: {
-        x: { beginAtZero: true }, // Escala horizontal
+        y: {
+          ticks: {
+            color: "white",
+            beginAtZero: true
+          }
+        },
+        x: { 
+          ticks: {
+            color: "white",
+            beginAtZero: true
+          }
+        }
       },
-      indexAxis: 'y', // Configuração para barras horizontais
+      indexAxis: 'y', 
     },
   });
 
@@ -57,29 +75,30 @@ const initializeCharts = () => {
     data: {
       labels: ['Usado', 'Disponível'],
       datasets: [{
-        data: [120, 180], // Exemplo: 120 kVA usado de um total de 300 kVA
+        data: [120, 180], 
         backgroundColor: ['#FF6384', '#CCCCCC'],
       }],
     },
     options: {
       responsive: true,
-      rotation: -90, // Começa em cima
-      circumference: 180, // Faz a meia lua
+      rotation: -90, 
+      circumference: 180, 
       plugins: {
         legend: { display: false },
         title: {
           display: true,
-          text: 'Consumo em (kWh)', // Adiciona o título do gráfico
+          text: 'Consumo em (kWh)', 
           font: {
             size: 16,
           },
+          color: '#054df4' // altera aqui https://www.chartjs.org/docs/latest/configuration/title.html
         },
       },
       elements: {
         center: {
-          text: '40%', // Valor central (ajustado dinamicamente pelo backend)
-          color: '#FF6384', // Cor do texto
-          minFontSize: 20, // Tamanho mínimo da fonte
+          text: '40%', 
+          color: '#FF6384', 
+          minFontSize: 20, 
         },
       },
     },
@@ -91,29 +110,30 @@ const initializeCharts = () => {
     data: {
       labels: ['Usado', 'Disponível'],
       datasets: [{
-        data: [75, 225], // Exemplo: 75 kVA usado de um total de 300 kVA
+        data: [75, 225],
         backgroundColor: ['#36A2EB', '#CCCCCC'],
       }],
     },
     options: {
       responsive: true,
-      rotation: -90, // Começa em cima
-      circumference: 180, // Faz a meia lua
+      rotation: -90, 
+      circumference: 180, 
       plugins: {
         legend: { display: false },
         title: {
           display: true,
-          text: 'Potência ativa da planta (kVA)', // Adiciona o título do gráfico
+          text: 'Potência ativa da planta (kVA)',
           font: {
             size: 16,
           },
+          color: '#054df4' // altera aqui https://www.chartjs.org/docs/latest/configuration/title.html
         },
       },
       elements: {
         center: {
-          text: '25%', // Valor central (ajustado dinamicamente pelo backend)
-          color: '#36A2EB', // Cor do texto
-          minFontSize: 20, // Tamanho mínimo da fonte
+          text: '25%',
+          color: '#36A2EB', 
+          minFontSize: 20, 
         },
       },
     },
@@ -123,11 +143,11 @@ const initializeCharts = () => {
 // Função para buscar dados do backend
 const fetchData = async () => {
   try {
-    const response = await fetch('http://192.168.15.29:700/api/data'); // URL da API
+    const response = await fetch('http://192.168.15.32:700/api/data');
     if (!response.ok) throw new Error('Erro ao buscar dados da API');
     const data = await response.json();
 
-    console.log('Dados recebidos do backend:', data); // Log para verificar os dados recebidos
+    console.log('Dados recebidos do backend:', data);
 
     // Atualizar gráficos e dados
     updateCharts(data);
@@ -149,13 +169,13 @@ const updateCharts = (data) => {
 
   if (consumoChart) {
     consumoChart.data.datasets[0].data = [data.atual.kw_atual, 300 - data.atual.kw_atual];
-    consumoChart.options.elements.center.text = `${((data.atual.kw_atual / 300) * 100).toFixed(1)}%`;
+    consumoChart.options.elements.center.text = `${data.atual.kw_atual} kWh`; // Exibe o valor real usado
     consumoChart.update();
   }
 
   if (potenciaChart) {
     potenciaChart.data.datasets[0].data = [data.atual.kw_atual, 300 - data.atual.kw_atual];
-    potenciaChart.options.elements.center.text = `${((data.atual.kw_atual / 300) * 100).toFixed(1)}%`;
+    potenciaChart.options.elements.center.text = `${data.atual.kw_atual} kVA`; // Exibe o valor real usado
     potenciaChart.update();
   }
 };
@@ -172,6 +192,6 @@ const updateTable = (atual) => {
   document.getElementById('frequencia').textContent = atual.frequencia || '0.00';
 };
 
-// Inicializar os gráficos e buscar dados do backend
+
 initializeCharts();
 fetchData();

@@ -1,53 +1,104 @@
+body {
+  background-color: #1e1e2f;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      background-color: #1e1e2f;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
+.navbar {
+  background-color: #2b2b3c;
+}
 
-    .navbar {
-      background-color: #2b2b3c;
-    }
+.navbar .navbar-brand, .navbar .nav-link {
+  color: #ffffff;
+}
 
-    .navbar .navbar-brand, .navbar .nav-link {
-      color: #ffffff;
-    }
+.dashboard {
+  margin-top: 20px;
+}
 
-    .card {
-      background-color: #2b2b3c;
-      border: none;
-      border-radius: 10px;
-      color: #ffffff;
-      padding: 15px;
-      margin-bottom: 20px;
-    }
+.card {
+  background-color: #2b2b3c;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+}
 
-    .dashboard .row {
-      margin-bottom: 20px;
-    }
+.chart-container {
+  padding: 10px;
+}
 
-    #consumoMensalChart, #consumoChart, #potenciaChart {
-      background-color: #2b2b3c;
-      padding: 10px;
-      border-radius: 10px;
-    }
+.card-header {
+  background-color: #3b3b4f;
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+}
 
-    table {
-      color: #ffffff;
-    }
+.row {
+  margin-bottom: 10px;
+}
 
-    th, td {
-      color: #ffffff !important;
-    }
+.dashboard {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  height: 95vh;
+}
 
-    .card-header {
-      font-size: 1.25rem;
-      text-align: center;
-      background-color: #3b3b4f;
-      color: #ffffff;
-    }
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
-    .card .table-hover tbody tr:hover {
-      background-color: #44445a;
-    }
-  
+#consumoMensalChart {
+  height: 100%;
+  width: 100%;
+}
+
+/* .info-cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+} */
+
+.info-cards-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  gap: 1rem
+}
+
+.info-card-top,
+.info-card-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.info-card {
+  background-color: #3b3b4f;
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  width: 30%;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.info-card h5 {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+.info-card p {
+  font-size: 1rem;
+  margin: 0;
+}
