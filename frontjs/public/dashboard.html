@@ -44,26 +44,6 @@
       text-align: center;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: #ffffff;
-    }
-
-    th, td {
-      padding: 8px;
-      text-align: center;
-      color: #ffffff;
-    }
-
-    th {
-      background-color: #3b3b4f;
-    }
-
-    .table-hover tbody tr:hover {
-      background-color: #44445a;
-    }
-
     .row {
       margin-bottom: 10px;
     }
@@ -88,8 +68,27 @@
       width: 100%;
     }
 
-    .table-container {
-      overflow-y: auto;
+    .info-cards-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .info-card {
+      background-color: #3b3b4f;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .info-card h5 {
+      font-size: 1.1rem;
+      margin: 5px 0;
+    }
+
+    .info-card p {
+      font-size: 1rem;
+      margin: 0;
     }
   </style>
 </head>
@@ -139,26 +138,34 @@
         </div>
       </div>
 
-      <!-- Table -->
+      <!-- Info Cards -->
       <div class="card">
         <div class="card-header">Dados Detalhados</div>
-        <div class="card-body table-container">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Parâmetro</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>Tensão LL</td><td id="tensaoLL">--</td></tr>
-              <tr><td>Corrente LL</td><td id="correnteLL">--</td></tr>
-              <tr><td>Tensão LN</td><td id="tensaoLN">--</td></tr>
-              <tr><td>Corrente LN</td><td id="correnteLN">--</td></tr>
-              <tr><td>FP</td><td id="fp">--</td></tr>
-              <tr><td>Frequência</td><td id="frequencia">--</td></tr>
-            </tbody>
-          </table>
+        <div class="card-body info-cards-container">
+          <div class="info-card">
+            <h5>Tensão LL</h5>
+            <p id="tensaoLL">--</p>
+          </div>
+          <div class="info-card">
+            <h5>Corrente LL</h5>
+            <p id="correnteLL">--</p>
+          </div>
+          <div class="info-card">
+            <h5>Tensão LN</h5>
+            <p id="tensaoLN">--</p>
+          </div>
+          <div class="info-card">
+            <h5>Corrente LN</h5>
+            <p id="correnteLN">--</p>
+          </div>
+          <div class="info-card">
+            <h5>FP</h5>
+            <p id="fp">--</p>
+          </div>
+          <div class="info-card">
+            <h5>Frequência</h5>
+            <p id="frequencia">--</p>
+          </div>
         </div>
       </div>
     </div>
