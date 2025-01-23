@@ -12,7 +12,9 @@ Chart.register({
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = chart.options.elements.center.color || '#000';
-      ctx.fillText(text, width / 2, height / 1.5);
+      ctx.shadowColor = 'white';
+      ctx.shadowBlur = 2;
+      ctx.fillText(text, width / 2, height - 20);
       ctx.restore();
     }
   },
